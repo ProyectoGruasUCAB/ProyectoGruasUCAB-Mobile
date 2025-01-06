@@ -20,7 +20,7 @@ const LoginScreen = () => {
     if (username === 'user' && password === 'password') {
       // Redireccionar a la pantalla principal (implementar navegación)
       console.log('Inicio de sesión exitoso');
-      navigation.navigate('Home')
+      navigation.navigate('GRUAS UCAB')
     } else {
       alert('Usuario o contraseña incorrectos'); 
     }

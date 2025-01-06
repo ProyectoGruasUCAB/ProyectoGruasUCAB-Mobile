@@ -1,19 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { View, StyleSheet } from 'react-native';
 import MapContainer from './MapContainer'
 
-const HomeScreen = () => {
+
+const ServiceScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>GRUAS UCAB</Text> 
-        <TouchableOpacity style={styles.optionsButton}>
-          <MaterialIcons name="menu" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
       <View style={styles.content}>
-        {/* Aquí va el contenido principal de tu pantalla */}
         <MapContainer />
       </View>
     </View>
@@ -46,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default ServiceScreen;
