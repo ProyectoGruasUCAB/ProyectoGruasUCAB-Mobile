@@ -6,23 +6,32 @@ import {
   TouchableOpacity, 
   StyleSheet, 
   TouchableWithoutFeedback, 
-  Keyboard, 
+  Keyboard,
+  Image 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import logo from '../assets/LOGO UCAB CON GRUA color.png';
+import { login, setAuthToken } from '../api'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('null');
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    // Lógica de autenticación (simulada en este ejemplo)
-    if (username === 'user' && password === 'password') {
-      // Redireccionar a la pantalla principal (implementar navegación)
-      console.log('Inicio de sesión exitoso');
-      navigation.navigate('GRUAS UCAB')
-    } else {
-      alert('Usuario o contraseña incorrectos'); 
+  const handleLogin = async () => {
+    try {
+      const user = await login(userEmail, password);
+      await AsyncStorage.setItem('authToken', user.token); 
+      await AsyncStorage.setItem('refreshToken', user.refreshToken);
+      await AsyncStorage.setItem('userEmail', user.userEmail);
+      setAuthToken(await AsyncStorage.getItem('authToken'));
+      navigation.navigate('GRUAS UCAB');
+    } catch (error) {
+      setError('Usuario o contraseña incorrectos');
+      alert(error.message)
     }
   };
 
@@ -30,12 +39,14 @@ const LoginScreen = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <View style={styles.container}>
         <View style={styles.contentContainer}> 
+        <Image source={logo} style={styles.logo}/>
+        <Text style={styles.megaTitle}>Gruas UCAB</Text>
           <Text style={styles.title}>Iniciar Sesión</Text>
           <TextInput
             style={styles.input}
-            placeholder="Nombre de usuario"
-            value={username}
-            onChangeText={setUsername}
+            placeholder="Correo electrónico"
+            value={userEmail}
+            onChangeText={setUserEmail}
             autoCapitalize="none" 
           />
           <TextInput
@@ -61,6 +72,11 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  megaTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 40,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -104,6 +120,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
   },
+  logo: {
+    width: 180,
+    height: 150,
+    marginBottom: 20,
+  }
 });
 
 export default LoginScreen;
