@@ -1,21 +1,33 @@
-import React from 'react';
-import { Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import ServiceScreen from './ServiceScreen';
 import ProfileScreen from './ProfileScreen';
 import HistoryScreen from './HistoryScreen';
-import { logout } from '../api'; // Importa la función logout
+import { logout } from '../apis/apiAuth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { messaging } from '../firebaseConfig'; // Ajusta la ruta según sea necesario
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  const navigation = useNavigation(); // Usa useNavigation para navegar
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log('Mensaje recibido:', payload);
+      navigation.navigate('OrderNotification', { orderData: payload.notification });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
 
   const handleLogout = async () => {
     try {
-      const userEmail =  await AsyncStorage.getItem('userEmail');
+      const userEmail = await AsyncStorage.getItem('userEmail');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       await logout(userEmail, refreshToken);
       navigation.navigate('Login');

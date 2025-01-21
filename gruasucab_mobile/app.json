@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyAC7-gJuSyktjtXk2OCIsbov1Dw3D3IDu4"
-      }
+      },
+      "bundleIdentifier": "com.gruasucab.gruasucabmobile"
     },
     "android": {
       "config": {
@@ -27,10 +28,28 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gruasucab.gruasucabmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-firebase-core",
+        {
+          "googleServicesFile": "./google-services.json"
+        }
+      ]
+    ],
+    "extra": {
+      "apiKey": "AIzaSyDZj4a7LCt0HTYnvw8w0--CJ__SdwGxr80",
+      "authDomain": "gruasucab-a7d08.firebaseapp.com",
+      "projectId": "gruasucab-a7d08",
+      "storageBucket": "gruasucab-a7d08.appspot.com",
+      "messagingSenderId": "151879219568",
+      "appId": "1:151879219568:android:17eb920c209e770c31b7b5",
+      "measurementId": "G-XXXXXXXXXX"
     }
   }
 }
