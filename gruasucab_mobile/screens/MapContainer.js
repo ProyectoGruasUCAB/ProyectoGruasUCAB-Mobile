@@ -3,14 +3,7 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 
 const MapComponent = ({ order }) => {
-  // Log the order data to the console
-  console.log(order.initialLocationDriverLat,
-    order.initialLocationDriverLon,
-  order.incidentLocationLat,
-order.incidentLocationLon,
-order.initialLocationDriverLat,
-order.initialLocationDriverLon
-  );
+
 
   const initialRegion = {
     latitude: order.incidentLocationLat || 10.49400,

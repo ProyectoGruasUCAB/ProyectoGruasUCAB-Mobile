@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "gruasucab_mobile",
-    "slug": "gruasucab_mobile",
+    "name": "Gruas UCAB",
+    "slug": "gruas-ucab",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,14 +14,24 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.gruasucab.gruasucabmobile",
       "config": {
-        "googleMapsApiKey": "AIzaSyAC7-gJuSyktjtXk2OCIsbov1Dw3D3IDu4"
+        "googleMapsApiKey": "AIzaSyAC7-gJuSyktjtXk2OCIsbov1Dw3D3IDu4",
+        "googleSignIn": {
+          "reservedClientId": "YOUR_IOS_REVERSED_CLIENT_ID"
+        }
       }
     },
     "android": {
+      "package": "com.gruasucab.gruasucabmobile",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAC7-gJuSyktjtXk2OCIsbov1Dw3D3IDu4"
+        },
+        "googleSignIn": {
+          "apiKey": "AIzaSyDZj4a7LCt0HTYnvw8w0--CJ__SdwGxr80",
+          "certificateHash": "YOUR_ANDROID_CERTIFICATE_HASH"
         }
       },
       "adaptiveIcon": {
@@ -31,6 +41,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
     }
   }
 }
