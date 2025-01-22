@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
+const order = {}
+
 const MapComponent = () => {
   const initialRegion = {
     latitude: 10.48801,

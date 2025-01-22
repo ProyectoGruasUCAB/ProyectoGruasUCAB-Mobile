@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/LOGO UCAB CON GRUA color.png';
-import { login, setAuthToken } from '../api'
+import { login, setAuthToken, getDriverById } from '../apis/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const LoginScreen = () => {
   const [userEmail, setUserEmail] = useState('');
@@ -23,15 +22,41 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
+      await AsyncStorage.setItem('userEmail', userEmail);
       const user = await login(userEmail, password);
-      await AsyncStorage.setItem('authToken', user.token); 
+      await AsyncStorage.setItem('userID', user.userID);  // Guardar el ID del usuario en AsyncStorage
+      await AsyncStorage.setItem('authToken', user.token);
+      await AsyncStorage.setItem('role', user.role);  
       await AsyncStorage.setItem('refreshToken', user.refreshToken);
-      await AsyncStorage.setItem('userEmail', user.userEmail);
       setAuthToken(await AsyncStorage.getItem('authToken'));
+
+      if (user.role === "Conductor") {
+        try {
+          setAuthToken(await AsyncStorage.getItem('authToken'));
+          await getDriverById(await AsyncStorage.getItem('userID'));
+          navigation.navigate('GRUAS UCAB');
+        } catch (error) {
+          if (error.status === 500) {
+            navigation.navigate('UserForm');
+            console.log("el error",error.response.status);
+            return;
+          } else {
+            console.log("Error al obtener conductor: ", error);
+            alert("No se puede iniciar sesión como conductor aún");
+          }
+        }
+      }
+
       navigation.navigate('GRUAS UCAB');
     } catch (error) {
-      setError('Usuario o contraseña incorrectos');
-      alert(error.message)
+      console.log("Error: ", error.response.data);
+      if (error.response.data === "Unauthorized access: Account is not fully set up") {
+        console.log("Redirigir a CreatePasswordForm");
+        navigation.navigate('CreatePasswordForm'); // Navegar al formulario de creación de contraseña
+      } else {
+        setError('Usuario o contraseña incorrectos');
+        alert(error.message);
+      }
     }
   };
 
@@ -39,8 +64,8 @@ const LoginScreen = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <View style={styles.container}>
         <View style={styles.contentContainer}> 
-        <Image source={logo} style={styles.logo}/>
-        <Text style={styles.megaTitle}>Gruas UCAB</Text>
+          <Image source={logo} style={styles.logo}/>
+          <Text style={styles.megaTitle}>Gruas UCAB</Text>
           <Text style={styles.title}>Iniciar Sesión</Text>
           <TextInput
             style={styles.input}

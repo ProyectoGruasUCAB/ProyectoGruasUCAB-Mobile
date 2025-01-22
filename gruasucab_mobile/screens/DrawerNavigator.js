@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import ServiceScreen from './ServiceScreen';
 import ProfileScreen from './ProfileScreen';
 import HistoryScreen from './HistoryScreen';
-import { logout } from '../api'; // Importa la función logout
+import { logout } from '../apis/api'; // Importa la función logout
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();

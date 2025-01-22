@@ -18,6 +18,8 @@ export const setAuthToken = (token) => {
   }
 };
 
+
+
 export const login = async (userEmail, password) => {
     try {
       const response = await apiClient.post('/Auth/Login', {
@@ -31,7 +33,7 @@ export const login = async (userEmail, password) => {
           console.error('Login failed: Invalid credentials');
           throw new Error('Invalid email or password');
         } else if (error.response.data === "Unauthorized access: Account is not fully set up") {
-          throw new Error('Account is not fully set up');
+          throw error;
         } else {
           console.error('Error during login:', error.response.data);
           throw new Error('An error occurred during login');
@@ -114,13 +116,14 @@ export const login = async (userEmail, password) => {
       console.error('Error al cerrar la sesión:', error);
     }
   }
-  
+
   export const handleIncompleteAccount = async (userEmail, password, newPassword) => {
     try {
+      console.log("Entro a handleIncompleteAccount");
       const response = await apiClient.post('/Auth/HandleIncompleteAccount', {
-        userEmail: userEmail,
-        password: password,
-        newPassword: newPassword
+        userEmail,
+        password,
+        newPassword
       });
   
       if (response.status === 200) {
@@ -131,11 +134,42 @@ export const login = async (userEmail, password) => {
         throw new Error('Error al actualizar la contraseña.');
       }
     } catch (error) {
+      console.log("El error en handleIncompleteAccount");
       console.error('Error al reestablecer la cuenta incompleta:', error);
       throw error;
     }
   };
+  
+  export const recordUserData = async (user) => {
+    try {
+      const response = await apiClient.post('/User/RecordUserData', user);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+        throw error; 
+    }
+  };
 
+  export const getDriverById = async (userId) => {
+    try {
+      const response = await apiClient.get(`/User/GetDriverById/${userId}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+        throw error; 
+    }
+  };
 
+  export const getAllSuppliers = async () => {
+    try {
+        const response = await apiClient.get('/Supplier/GetAllSuppliers');
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener los proveedores:', error);
+        throw error;
+    }
+}
 
 export default apiClient;
