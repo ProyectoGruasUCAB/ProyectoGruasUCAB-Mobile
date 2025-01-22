@@ -26,7 +26,7 @@ order.initialLocationDriverLon
     },
     {
       elementType: 'labels.text.fill',
-      stylers: [{ visibility: 'on' }],
+      stylers: [{ visibility: 'off' }],
     },
     {
       featureType: 'road',
@@ -51,7 +51,7 @@ order.initialLocationDriverLon
         style={styles.map}
         initialRegion={initialRegion}
         provider={PROVIDER_GOOGLE}
-        customMapStyle={mapStyle}
+      //  customMapStyle={mapStyle}
         showsUserLocation={true}
         showsMyLocationButton={true}
       >

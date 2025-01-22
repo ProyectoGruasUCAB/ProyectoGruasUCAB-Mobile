@@ -12,7 +12,7 @@ const ProfileScreen = () => {
         setAuthToken(await AsyncStorage.getItem('authToken'));
         const driverData = await getDriverById(await AsyncStorage.getItem('userID'));
         console.log(driverData);
-        setDriver(driverData);
+        setDriver(driverData.driver);
       } catch (error) {
         console.error('Error al obtener los datos del conductor:', error);
       }
@@ -35,75 +35,78 @@ const ProfileScreen = () => {
     );
   }
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.name}>{driver.name}</Text>
-      <Text style={styles.email}>{driver.userEmail}</Text>
-      <Text style={styles.phone}>{driver.phone}</Text>
-      <Text style={styles.cedula}>{driver.cedula}</Text>
-      <Text style={styles.birthDate}>Fecha de Nacimiento: {formatDate(driver.birthDate)}</Text>
-      <Text style={styles.medicalCertificate}>Certificado Médico: {driver.medicalCertificate}</Text>
-      <Text style={styles.medicalCertificateExpirationDate}>Fecha de Expiración del Certificado Médico: {formatDate(driver.medicalCertificateExpirationDate)}</Text>
-      <Text style={styles.driverLicense}>Licencia de Conducir: {driver.driverLicense}</Text>
-      <Text style={styles.driverLicenseExpirationDate}>Fecha de Expiración de la Licencia de Conducir: {formatDate(driver.driverLicenseExpirationDate)}</Text>
-    </ScrollView>
-  );
-};
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.profileCard}>
+          <Text style={styles.name}>{driver.name}</Text>
+          <Text style={styles.email}>{driver.userEmail}</Text>
+          <Text style={styles.phone}>{driver.phone}</Text>
+          <Text style={styles.cedula}>{driver.cedula}</Text>
+          <Text style={styles.label}>Fecha de Nacimiento:</Text>
+          <Text style={styles.value}>{formatDate(driver.birthDate)}</Text>
+          <Text style={styles.label}>Certificado Médico:</Text>
+          <Text style={styles.value}>{driver.medicalCertificate}</Text>
+          <Text style={styles.label}>Fecha de Expiración del Certificado Médico:</Text>
+          <Text style={styles.value}>{formatDate(driver.medicalCertificateExpirationDate)}</Text>
+          <Text style={styles.label}>Licencia de Conducir:</Text>
+          <Text style={styles.value}>{driver.driverLicense}</Text>
+          <Text style={styles.label}>Fecha de Expiración de la Licencia de Conducir:</Text>
+          <Text style={styles.value}>{formatDate(driver.driverLicenseExpirationDate)}</Text>
+        </View>
+      </ScrollView>
+    );
+  };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: 'white',
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: 'black',
-  },
-  email: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  phone: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  cedula: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  birthDate: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  medicalCertificate: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  medicalCertificateExpirationDate: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  driverLicense: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-  driverLicenseExpirationDate: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'black',
-  },
-});
-
-export default ProfileScreen;
+  const styles = StyleSheet.create({
+    container: {
+      paddingVertical: 20,
+      paddingHorizontal: 15,
+      backgroundColor: '#f5f5f5',
+      flexGrow: 1,
+    },
+    profileCard: {
+      backgroundColor: '#fff',
+      borderRadius: 10,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      elevation: 5,
+      marginBottom: 20,
+    },
+    name: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: '#333',
+    },
+    email: {
+      fontSize: 16,
+      marginBottom: 5,
+      color: '#555',
+    },
+    phone: {
+      fontSize: 16,
+      marginBottom: 5,
+      color: '#555',
+    },
+    cedula: {
+      fontSize: 16,
+      marginBottom: 15,
+      color: '#555',
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: '#888',
+    },
+    value: {
+      fontSize: 16,
+      marginBottom: 15,
+      color: '#333',
+    },
+  });
+  
+  export default ProfileScreen;
+  

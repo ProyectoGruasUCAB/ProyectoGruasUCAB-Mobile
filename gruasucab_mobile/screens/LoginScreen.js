@@ -60,6 +60,10 @@ const LoginScreen = () => {
     }
   };
 
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword'); // Navegar al formulario de recuperación de contraseña
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <View style={styles.container}>
@@ -85,7 +89,7 @@ const LoginScreen = () => {
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
           <TouchableOpacity 
-            onPress={() => alert('Funcionalidad aún no implementada')} 
+            onPress={handleForgotPassword} 
             style={styles.forgotPasswordContainer}
           >
             <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>

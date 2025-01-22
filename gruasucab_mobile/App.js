@@ -6,6 +6,7 @@ import CreatePasswordForm from './screens/NewPasswordForm';
 import LoginScreen from './screens/LoginScreen';
 import DrawerNavigator from './screens/DrawerNavigator'; 
 import UserForm from './screens/UserFormScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,10 @@ const App = () => {
         <Stack.Screen 
           name="CreatePasswordForm" 
           component={CreatePasswordForm}  
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPasswordScreen}
         />  
       </Stack.Navigator>
     </NavigationContainer>
