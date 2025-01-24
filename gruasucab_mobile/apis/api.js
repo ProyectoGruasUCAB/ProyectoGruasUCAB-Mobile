@@ -183,4 +183,17 @@ export const updateUserData = async (driver) => {
   }
 };
 
+export const getServiceOrderByDriverId = async (driverId) => {
+  try {
+    const response = await apiClient.get(`/ServiceOrder/GetOrdersByDriverId/${driverId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error al obtener la orden de servicio:', error);
+    throw error;
+  }
+}
+
+
 export default apiClient;

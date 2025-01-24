@@ -31,6 +31,8 @@ const LoginScreen = () => {
       await AsyncStorage.setItem('authToken', user.token);
       await AsyncStorage.setItem('role', user.role);  
       await AsyncStorage.setItem('refreshToken', user.refreshToken);
+      await AsyncStorage.setItem('workerId', user.workerId);
+      console.log('User:', user);
       setAuthToken(await AsyncStorage.getItem('authToken'));
 
       if (user.role === "Conductor") {

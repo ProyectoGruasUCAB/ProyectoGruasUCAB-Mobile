@@ -36,12 +36,14 @@ const UserForm = () => {
       const storedEmail = await AsyncStorage.getItem('userEmail');
       const storedUserId = await AsyncStorage.getItem('userID');
       const storedRole = await AsyncStorage.getItem('role');
+      const storedWorkerId = await AsyncStorage.getItem('workerId');
       
       setDriver(prevDriver => ({
         ...prevDriver,
         userEmail: storedEmail || '',
         userId: storedUserId || '',
         role: storedRole || '',
+        workplaceId: storedWorkerId || ''
       }));
     };
     
@@ -199,21 +201,7 @@ const UserForm = () => {
         </View>
       </View>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Proveedor</Text>
-          <Picker
-            selectedValue={driver.workplaceId}
-            onValueChange={(itemValue) => handleChange('workplaceId', itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Seleccione un proveedor" value="" />
-            {suppliers.map((supplier) => (
-              <Picker.Item key={supplier.supplierId} label={supplier.name} value={supplier.supplierId} />
-            ))}
-          </Picker>
-        </View>
-      </View>
+      
       
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Registrar</Text>
