@@ -1,41 +1,43 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import MapContainer from './MapContainer'
-
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import MapContainer from './MapContainer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getServiceOrderByDriverId, setAuthToken } from '../apis/api';
 
 const ServiceScreen = () => {
+  const [orders, setOrders] = useState([]);
+  const [actualOrder, setActualOrder] = useState(null);
 
-  const simulatedOrder = {
-    serviceOrder: {
-      serviceOrderId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      statusServiceOrder: "En Proceso",
-      incidentDescription: "Accidente menor",
-      initialLocationDriverLat: 10.48801,
-      initialLocationDriverLon: -66.87919,
-      incidentLocationLat: 10.50000,
-      incidentLocationLon: -66.87000,
-      incidentLocationEndLat: 10.51000,
-      incidentLocationEndLon: -66.86000,
-      incidentDistance: 5,
-      customerVehicleDescription: "Toyota Corolla, Blanco",
-      incidentCost: 150,
-      policyId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      incidentDate: "2025-01-22",
-      vehicleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      driverId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      customerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      operatorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      serviceFeeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    }
-  };
-  
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = await AsyncStorage.getItem('authToken');
+        await setAuthToken(token);
+        const driverId = await AsyncStorage.getItem('userID');
+        const orderData = await getServiceOrderByDriverId(driverId);
+        setOrders(orderData.serviceOrders);
+
+        // Filtra la orden con statusServiceOrder igual a 'PorAceptar'
+        const orderToAccept = orders.find(order => order.statusServiceOrder === 'PorAceptado');
+        setActualOrder(orderToAccept);
+        console.log(orderToAccept);
+      } catch (error) {
+        console.error('Error al cargar las órdenes:', error);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <MapContainer order={simulatedOrder.serviceOrder} />
-      </View>
+    <View style={styles.content}>
+      {actualOrder ? (
+        <MapContainer order={actualOrder} />
+      ) : (
+        <Text style={styles.noOrderText}>No hay órdenes por aceptar</Text>
+      )}
     </View>
+  </View>
   );
 };
 

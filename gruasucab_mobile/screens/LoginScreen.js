@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -11,15 +11,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/LOGO UCAB CON GRUA color.png';
-import { login, setAuthToken, getDriverById } from '../apis/api';
+import { login, setAuthToken, getDriverById, updateUserData } from '../apis/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { registerForPushNotificationsAsync } from '../functions/notificationsService';
 
 const LoginScreen = () => {
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('null');
+  const [tokenFCM, setTokenFCM] = useState('');
   const navigation = useNavigation();
 
+  
   const handleLogin = async () => {
     try {
       await AsyncStorage.setItem('userEmail', userEmail);
@@ -28,6 +31,8 @@ const LoginScreen = () => {
       await AsyncStorage.setItem('authToken', user.token);
       await AsyncStorage.setItem('role', user.role);  
       await AsyncStorage.setItem('refreshToken', user.refreshToken);
+      await AsyncStorage.setItem('workerId', user.workerId);
+      console.log('User:', user);
       setAuthToken(await AsyncStorage.getItem('authToken'));
 
       if (user.role === "Conductor") {
@@ -44,6 +49,26 @@ const LoginScreen = () => {
             console.log("Error al obtener conductor: ", error);
             alert("No se puede iniciar sesión como conductor aún");
           }
+        }
+      }
+      console.log('Previus token:');
+      const token = await registerForPushNotificationsAsync();
+      setTokenFCM(token);
+      console.log('Expo Push Token:', token);
+
+      if (tokenFCM) {
+        // Obtener la información actual del conductor
+        const driver = await getDriverById(user.userID);
+
+        // Actualizar solo el campo tokenFCM
+        driver.tokenFCM = tokenFCM;
+
+        // Actualizar la información del conductor usando el endpoint updateUserData
+        const updateResponse = await updateUserData(driver);
+        if (updateResponse.success) {
+          console.log('Token de notificaciones guardado correctamente en el servidor.');
+        } else {
+          console.error('Error al guardar el token de notificaciones en el servidor:', updateResponse.message);
         }
       }
 

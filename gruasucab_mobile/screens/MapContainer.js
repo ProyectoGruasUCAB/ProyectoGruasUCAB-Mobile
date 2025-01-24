@@ -3,22 +3,15 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from 'react-native-maps';
 
 const MapComponent = ({ order }) => {
-  // Log the order data to the console
-  console.log(order.initialLocationDriverLat,
-    order.initialLocationDriverLon,
-  order.incidentLocationLat,
-order.incidentLocationLon,
-order.initialLocationDriverLat,
-order.initialLocationDriverLon
-  );
 
+  const actualOrder = order;
   const initialRegion = {
-    latitude: order.incidentLocationLat || 10.49400,
-    longitude: order.incidentLocationLon || -66.87400,
+    latitude: actualOrder.incidentLocationLatitude || 10.49400,
+    longitude: actualOrder.incidentLocationLongitude || -66.87400,
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   };
-
+  console.log(actualOrder);
   const mapStyle = [
     {
       elementType: 'labels.icon',
@@ -35,64 +28,55 @@ order.initialLocationDriverLon
     },
     {
       featureType: 'road',
-      elementType: 'labels.text.stroke',
-      stylers: [{ visibility: 'on' }, { color: '#000000' }],
-    },
-    {
-      featureType: 'landscape',
-      elementType: 'all',
-      stylers: [{ visibility: 'on' }, { color: '#e5e5e5' }],
     },
   ];
 
   return (
     <View style={styles.container}>
       <MapView
+        provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={initialRegion}
-        provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
       >
-        {order.initialLocationDriverLat && order.initialLocationDriverLon && (
+        {actualOrder.initialLocationDriverLatitude && actualOrder.initialLocationDriverLongitude && (
           <Marker
-            coordinate={{ latitude: order.initialLocationDriverLat, longitude: order.initialLocationDriverLon }}
+            coordinate={{ latitude: actualOrder.initialLocationDriverLatitude, longitude: actualOrder.initialLocationDriverLongitude }}
             title="Conductor"
             description="Posición inicial del conductor"
           />
         )}
-        {order.incidentLocationLat && order.incidentLocationLon && (
+        {actualOrder.incidentLocationLatitude && actualOrder.incidentLocationLongitude && (
           <Marker
-            coordinate={{ latitude: order.incidentLocationLat, longitude: order.incidentLocationLon }}
+            coordinate={{ latitude: actualOrder.incidentLocationLatitude, longitude: actualOrder.incidentLocationLongitude }}
             title="Incidente"
             description="Ubicación del incidente"
           />
         )}
-        {order.incidentLocationEndLat && order.incidentLocationEndLon && (
+        {actualOrder.incidentLocationEndLatitude && actualOrder.incidentLocationEndLongitude && (
           <Marker
-            coordinate={{ latitude: order.incidentLocationEndLat, longitude: order.incidentLocationEndLon }}
+            coordinate={{ latitude: actualOrder.incidentLocationEndLatitude, longitude: actualOrder.incidentLocationEndLongitude }}
             title="Destino"
             description="Destino del incidente"
           />
         )}
-        {order.incidentLocationLat && order.incidentLocationLon && order.incidentLocationEndLat && order.incidentLocationEndLon && (
+        {actualOrder.incidentLocationLatitude && actualOrder.incidentLocationLongitude && actualOrder.incidentLocationEndLatitude && actualOrder.incidentLocationEndLongitude && (
           <Polyline
             coordinates={[
-              { latitude: order.incidentLocationLat, longitude: order.incidentLocationLon },
-              { latitude: order.incidentLocationEndLat, longitude: order.incidentLocationEndLon },
+              { latitude: actualOrder.incidentLocationLatitude, longitude: actualOrder.incidentLocationLongitude },
+              { latitude: actualOrder.incidentLocationEndLatitude, longitude: actualOrder.incidentLocationEndLongitude },
             ]}
             strokeColor="#000"
             strokeWidth={3}
           />
         )}
-        {order.initialLocationDriverLat && order.initialLocationDriverLon && order.incidentLocationLat && order.incidentLocationLon && (
+        {actualOrder.initialLocationDriverLatitude && actualOrder.initialLocationDriverLongitude && actualOrder.incidentLocationLatitude && actualOrder.incidentLocationLongitude && (
           <Polyline
             coordinates={[
-              { latitude: order.initialLocationDriverLat, longitude: order.initialLocationDriverLon },
-              { latitude: order.incidentLocationLat, longitude: order.incidentLocationLon },
+              { latitude: actualOrder.initialLocationDriverLatitude, longitude: actualOrder.initialLocationDriverLongitude },
+              { latitude: actualOrder.incidentLocationLatitude, longitude: actualOrder.incidentLocationLongitude },
             ]}
-            strokeColor="#FF0000"
+            strokeColor="#000"
             strokeWidth={3}
           />
         )}
@@ -124,20 +108,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 2, // Ajusta la altura según sea necesario
   },
   details: {
-    flex: 1,
-    marginTop: 20,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+    padding: 16,
   },
   detailText: {
     fontSize: 16,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   boldText: {
     fontWeight: 'bold',

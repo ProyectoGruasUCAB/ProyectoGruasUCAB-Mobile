@@ -172,4 +172,28 @@ export const login = async (userEmail, password) => {
     }
 }
 
+export const updateUserData = async (driver) => {
+  try {
+    const response = await apiClient.put(`/User/UpdateUserData`, driver);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getServiceOrderByDriverId = async (driverId) => {
+  try {
+    const response = await apiClient.get(`/ServiceOrder/GetOrdersByDriverId/${driverId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error al obtener la orden de servicio:', error);
+    throw error;
+  }
+}
+
+
 export default apiClient;
